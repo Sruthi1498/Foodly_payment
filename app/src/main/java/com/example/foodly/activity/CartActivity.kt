@@ -1,15 +1,16 @@
 package com.example.foodly.activity
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.view.MenuItem
 import android.view.View
+import com.wangsun.upi.payment.UpiPayment
+import com.wangsun.upi.payment.model.PaymentDetail
+import com.wangsun.upi.payment.model.TransactionDetails
 import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,7 +21,6 @@ import com.example.foodly.R
 import com.example.foodly.adapter.CartAdapter
 import com.example.foodly.model.CartItems
 import com.example.foodly.util.ConnectionManager
-import com.muddzdev.styleabletoast.StyleableToast
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -29,7 +29,7 @@ import org.json.JSONObject
 class CartActivity : AppCompatActivity() {
 
     lateinit var toolbar: androidx.appcompat.widget.Toolbar
-    lateinit var orderingFrom: TextView
+    lateinit var txtOrderingFrom: TextView
     lateinit var btnPlaceOrder: Button
     lateinit var recyclerView: RecyclerView
     lateinit var layoutManager: RecyclerView.LayoutManager
@@ -48,7 +48,7 @@ class CartActivity : AppCompatActivity() {
         setContentView(R.layout.activity_cart)
 
         btnPlaceOrder = findViewById(R.id.btnPlaceOrder)
-        orderingFrom = findViewById(R.id.txtOrderingFrom)
+        txtOrderingFrom = findViewById(R.id.txtOrderingFrom)
         linearLayout = findViewById(R.id.linearLayout)
         toolbar = findViewById(R.id.toolBar)
         cartProgressLayout = findViewById(R.id.cartProgressLayout)
@@ -56,7 +56,7 @@ class CartActivity : AppCompatActivity() {
         restaurantId = intent.getStringExtra("restaurantId").toString()
         restaurantName = intent.getStringExtra("restaurantName").toString()
         selectedItemsId = intent.getStringArrayListExtra("selectedItemsId") as ArrayList<String>
-        orderingFrom.text = restaurantName
+        txtOrderingFrom.text = restaurantName
 
         setToolBar()
         fetchData()
@@ -97,22 +97,15 @@ class CartActivity : AppCompatActivity() {
 
                             val response = it.getJSONObject("data")
                             val success = response.getBoolean("success")
+                            val LAUNCH_SECOND_ACTIVITY = 1
                             if (success) {
-
-                                StyleableToast.Builder(this).text("Order Placed")
-                                    .textColor(Color.WHITE)
-                                    .iconStart(R.drawable.ic_favorite)
-                                    .length(100)
-                                    .backgroundColor(Color.RED)
-                                    .show()
-
-                                val intent = Intent(this, OrderPlacedActivity::class.java)
-                                startActivity(intent)
-                                finishAffinity()
+                                val intent = Intent(this, PaymentActivity::class.java)
+                                intent.putExtra("total_amount",totalAmount)
+                                startActivityForResult(intent,LAUNCH_SECOND_ACTIVITY)
 
                             } else {
                                 val responseMessageServer =
-                                    response.getString("Credentials already taken")
+                                    response.getString("errorMessage")
                                 Toast.makeText(
                                     this,
                                     responseMessageServer.toString(),
@@ -209,6 +202,7 @@ class CartActivity : AppCompatActivity() {
                                         .toInt()
                                     cartListItems.add(menuObject)
 
+
                                 }
                                 menuAdapter = CartAdapter(this, cartListItems)
                                 recyclerView.adapter = menuAdapter
@@ -286,3 +280,4 @@ class CartActivity : AppCompatActivity() {
 
 
 }
+
