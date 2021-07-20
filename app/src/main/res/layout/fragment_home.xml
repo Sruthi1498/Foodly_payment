@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/refresh"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent">
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -38,8 +34,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-
-                android:layout_marginLeft="10dp"
                 android:background="@color/grey"
                 android:text="Name (a-z)"
                 android:fontFamily="@font/poppins_light"
@@ -49,11 +43,9 @@
                 style="@style/CustomChipStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:background="@color/grey"
                 android:text="Name (z-a)"
                 android:padding="10dp"
-
                 android:fontFamily="@font/poppins_light"
                 android:id="@+id/byNameDesc"
                 android:textSize="13sp" />
@@ -62,10 +54,8 @@
                 style="@style/CustomChipStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:background="@color/grey"
                 android:padding="10dp"
-
                 android:text="Price (High-Low)"
                 android:fontFamily="@font/poppins_light"
                 android:id="@+id/byPrice"
@@ -74,10 +64,9 @@
                 style="@style/CustomChipStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:background="@color/grey"
                 android:padding="10dp"
-
+                android:layout_marginRight="10dp"
                 android:text="Price (Low-High)"
                 android:fontFamily="@font/poppins_light"
                 android:id="@+id/byPriceDesc"
@@ -156,4 +145,3 @@
 
 
 </RelativeLayout>
-</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
