@@ -25,6 +25,8 @@
         <activity
             android:name=".activity.LoginActivity" />
         <activity
+            android:name=".activity.PaymentActivity"/>
+        <activity
             android:name=".activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
