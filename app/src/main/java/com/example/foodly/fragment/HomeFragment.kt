@@ -14,7 +14,6 @@ import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -36,7 +35,6 @@ import kotlin.collections.HashMap
 
 
 class HomeFragment : Fragment() {
-
     lateinit var recyclerDashboard: RecyclerView
 
     lateinit var layoutManager: RecyclerView.LayoutManager
@@ -59,59 +57,26 @@ class HomeFragment : Fragment() {
 
     lateinit var imageSlider: ImageSlider
 
-    lateinit var refreshLayout: SwipeRefreshLayout
-
-
-
     val restaurantInfoList = arrayListOf<Restaurant>()
-
-
-
     override fun onCreateView(
-
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         val view = inflater.inflate(R.layout.fragment_home, container, false)
-
-
-
         setHasOptionsMenu(true)
-
-
-
-
-
         recyclerDashboard = view.findViewById(R.id.recyclerDashboard)
-
         layoutManager = LinearLayoutManager(activity)
-
         homeProgress = view.findViewById(R.id.progressHomeLayout)
-
         searchBar = view.findViewById(R.id.main_search_bar)
-
         imageSlider = view.findViewById(R.id.imageSlider)
-
         byRating = view.findViewById(R.id.byRating)
-
         byPrice = view.findViewById(R.id.byPrice)
-
         byName = view.findViewById(R.id.byName)
-
         byNameDesc = view.findViewById(R.id.byNameDesc)
-
         byPriceDesc = view.findViewById(R.id.byPriceDesc)
 
-        refreshLayout = view.findViewById(R.id.refresh)
-
-
-
         val queue = Volley.newRequestQueue(activity as Context)
-
-
-
         val slideModel : ArrayList<SlideModel> = ArrayList()
 
 
@@ -172,6 +137,9 @@ class HomeFragment : Fragment() {
                                     activity as Context,
                                     restaurantInfoList
                                 )
+                                Collections.sort(restaurantInfoList, ratingComp)
+                                restaurantInfoList.reverse()
+                                recyclerAdapter.notifyDataSetChanged()
 
                                 recyclerDashboard.adapter = recyclerAdapter
                                 recyclerDashboard.layoutManager = layoutManager
@@ -212,7 +180,6 @@ class HomeFragment : Fragment() {
                 val settingsIntent = Intent(Settings.ACTION_WIRELESS_SETTINGS)
                 startActivity(settingsIntent)
                 activity?.finish()
-
             }
 
             dialog.setNegativeButton("Exit") { text, listener ->
@@ -241,50 +208,22 @@ class HomeFragment : Fragment() {
                 recyclerDashboard.adapter = RestaurantRecycleAdapter(activity as Context, listData)
                 (recyclerDashboard.adapter as RestaurantRecycleAdapter).notifyDataSetChanged()
             }
-
-
         }
         )
-
-        refreshLayout.setOnRefreshListener{
-            val tr: FragmentTransaction? = getFragmentManager()?.beginTransaction();
-            tr?.replace(R.id.refresh, HomeFragment());
-            tr?.commit()
-
-
-        }
-
-
-
         val costComparator = Comparator<Restaurant> { rest1, rest2 ->
-
             rest1.restaurantPrice.compareTo(rest2.restaurantPrice, true)
         }
         val ratingCompName = Comparator<Restaurant> { item1, item2 ->
             if (item1.restaurantName.compareTo(item2.restaurantName, true) == 0) {
                 item1.restaurantName.compareTo(item2.restaurantName, true)
-
-
-
-            } else {
-
-
-
+            } else{
                 item1.restaurantName.compareTo(item2.restaurantName, true)
-
-
-
             }
-
-
-
         }
         byPrice.setOnClickListener {
             Collections.sort(restaurantInfoList, costComparator)
             restaurantInfoList.reverse()
-
             recyclerAdapter.notifyDataSetChanged()
-
         }
         byPriceDesc.setOnClickListener {
             Collections.sort(restaurantInfoList, costComparator)
@@ -294,7 +233,6 @@ class HomeFragment : Fragment() {
         byRating.setOnClickListener {
             Collections.sort(restaurantInfoList, ratingComp)
             restaurantInfoList.reverse()
-
             recyclerAdapter.notifyDataSetChanged()
 
         }
@@ -306,17 +244,10 @@ class HomeFragment : Fragment() {
         byNameDesc.setOnClickListener {
             Collections.sort(restaurantInfoList, ratingCompName)
             restaurantInfoList.reverse()
-
             recyclerAdapter.notifyDataSetChanged()
-
         }
-
-
         return view
     }
-
 }
-
-
 
 
