@@ -6,6 +6,8 @@ import android.net.NetworkInfo
 
 class ConnectionManager {
 
+    //TODO this class doesn't have any state. So this should be static ( companion object ).
+    // No need to create a ConnectionManager() manager instance everytime to call this method
     fun checkConnectivity(context: Context): Boolean {
 
         val connectionManager =

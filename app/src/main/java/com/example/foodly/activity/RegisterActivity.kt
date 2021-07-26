@@ -106,6 +106,7 @@ class RegisterActivity : AppCompatActivity() {
 
                             },
                                 Response.ErrorListener {
+                                    //TODO Shouldn't directly show exception messages in UI
                                     Toast.makeText(this, "$it Error", Toast.LENGTH_SHORT).show()
                                 }) {
                             override fun getHeaders(): MutableMap<String, String> {
@@ -190,6 +191,7 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         if (etPassword.text.isNotBlank() || etConfirmPassword.text.isNotBlank()) {
+            //TODO password string might contain non-numeric characters, converting them to Int will throw exception. These strings can be compared directly
             if (etPassword.text.toString().toInt() == etConfirmPassword.text.toString().toInt()) {
                 noError++
             } else {

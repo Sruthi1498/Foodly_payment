@@ -57,6 +57,8 @@ class ProfileFragment(val contextParam: Context) : Fragment() {
 
         return view
     }
+
+    //TODO method or variable names should be in camelCase
     private fun SpannableStringWithColor(view: TextView, start:Int, end:Int, s: String) {
         val wordToSpan: Spannable =
             SpannableString(s)

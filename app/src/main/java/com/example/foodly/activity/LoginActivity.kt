@@ -81,6 +81,11 @@ class LoginActivity : AppCompatActivity() {
 
                             if (success) {
                                 val data = response.getJSONObject("data")
+                                //TODO sharedPreferences.edit() creates a new Editor instance for every method call.
+                                // This can be called once, the  returned editor instance can be stored in a variable and re-used.
+                                // same goes to the apply method. apply method initiates a write operation. So instead of calling it multiple times,
+                                // it should be called once to save this batch of values
+                                // We should always reuse an Object especially a resource, reduce the no of expensive method calls whenever possible
                                 sharedPreferences.edit().putBoolean("isLoggedIn", true).apply()
                                 sharedPreferences.edit()
                                     .putString("user_id", data.getString("user_id")).apply()

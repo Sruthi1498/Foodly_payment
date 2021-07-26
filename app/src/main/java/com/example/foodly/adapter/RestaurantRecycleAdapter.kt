@@ -63,7 +63,7 @@ class RestaurantRecycleAdapter(val context: Context, private var itemList: Array
             intent.putExtra("restaurantRating", restaurant.restaurantRating.toString())
             context.startActivity(intent)
         }
-
+        //TODO AsyncTask is depcrecated, should be avoided and This is not how it should be used
         val checkFav = DBAsyncTask(context, restaurantEntity, 1).execute()
         val isFav = checkFav.get()
 
@@ -128,17 +128,18 @@ class RestaurantRecycleAdapter(val context: Context, private var itemList: Array
 class DBAsyncTask(val context: Context, val restaurantEntity: RestaurantEntity, val mode: Int) :
     AsyncTask<Void, Void, Boolean>() {
 
-
+    //TODO Database instance should be created once for the whole application and the reference should be used everywhere
     val db = Room.databaseBuilder(context, RestaurantDatabase::class.java, "restaurant-db").build()
 
     override fun doInBackground(vararg params: Void?): Boolean {
 
         when (mode) {
-
+//TODO the mode should be declared as a constant with a meaningful name denoting what it stands for, so that the code can be understood better
             1 -> {
                 val restaurant: RestaurantEntity =
                     db.restaurantDao().getAllRestaurant(restaurantEntity.restaurant_Id)
                 db.close()
+                //TODO this will always return true as restaurant is non-nullable
                 return restaurant != null
 
             }

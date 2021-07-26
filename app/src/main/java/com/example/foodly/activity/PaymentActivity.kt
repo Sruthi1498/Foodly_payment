@@ -92,6 +92,8 @@ class PaymentActivity : AppCompatActivity() {
             for (i in response.indices) {
                 val equalStr = response[i].split("=").toTypedArray()
                 if (equalStr.size >= 2) {
+                    //TODO While converting to lower case for internal values, always use Locale.ENGLISH, Some alphabets can be different in lowercases for some other languages.
+                        // Also this comparison can be replaced with ignoreCase like txnRef or as we're using hardcoded strings for comparison, we can directly used lowercase string i.e, "status", "approvalrefno"
                     if (equalStr[0].lowercase(Locale.getDefault()) == "Status".toLowerCase()) {
                         status = equalStr[1].toLowerCase()
                     } else if (equalStr[0].lowercase(Locale.getDefault()) == "ApprovalRefNo".toLowerCase() || equalStr[0].equals(
@@ -132,10 +134,12 @@ class PaymentActivity : AppCompatActivity() {
     }
 
     companion object {
+        //TODO avoid code duplication whenever possible. this same method is already present in ConnectionManager.checkConnectivity
         fun isConnectionAvailable(context: Context): Boolean {
             val connectivityManager =
                 context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val netInfo = connectivityManager.activeNetworkInfo
+            //TODO directly return boolean instead of if-else. should avoid branching whenever possible
             if (netInfo != null && netInfo.isConnected
                 && netInfo.isConnectedOrConnecting
                 && netInfo.isAvailable

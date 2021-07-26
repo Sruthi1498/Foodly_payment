@@ -87,6 +87,7 @@ class CartActivity : AppCompatActivity() {
                     sendOrder.put("food", foodArray)
 
                     val queue = Volley.newRequestQueue(this)
+                    //TODO server address / API path should be a single variable/constant instead of being hardcoded everywhere
                     val url = "http://13.235.250.119/v2/place_order/fetch_result"
 
                     val jsonObjectRequest = object : JsonObjectRequest(
@@ -94,13 +95,14 @@ class CartActivity : AppCompatActivity() {
                         url,
                         sendOrder,
                         Response.Listener {
-
+                            //TODO Always have handling for unexpected responses like different keys or values or JSON structure or empty response
                             val response = it.getJSONObject("data")
                             val success = response.getBoolean("success")
                             val LAUNCH_SECOND_ACTIVITY = 1
                             if (success) {
                                 val intent = Intent(this, PaymentActivity::class.java)
                                 intent.putExtra("total_amount",totalAmount)
+                                //TODO activity is started for result, but result is neither set in PaymentActivity nor handled on onActivityResult
                                 startActivityForResult(intent,LAUNCH_SECOND_ACTIVITY)
 
                             } else {
@@ -116,7 +118,7 @@ class CartActivity : AppCompatActivity() {
                             cartProgressLayout.visibility = View.INVISIBLE
                         },
                         Response.ErrorListener {
-
+                            //TODO Always try to show specific error message whenever the cause is known
                             Toast.makeText(
                                 this,
                                 "Some Error occurred!!!",
@@ -126,6 +128,7 @@ class CartActivity : AppCompatActivity() {
                         override fun getHeaders(): MutableMap<String, String> {
                             val headers = HashMap<String, String>()
                             headers["Content-type"] = "application/json"
+                            //TODO such key values should be a string resource or constant
                             headers["token"] = "9bf534118365f1"
                             return headers
                         }
@@ -133,6 +136,7 @@ class CartActivity : AppCompatActivity() {
                     queue.add(jsonObjectRequest)
 
                 } catch (e: JSONException) {
+                    //TODO Always use string resources for UI content. that will be useful for localisation, to maintain uniform content across app and avoid duplication
                     Toast.makeText(
                         this,
                         "Some unexpected error occurred!!",
@@ -172,7 +176,7 @@ class CartActivity : AppCompatActivity() {
             try {
                 val queue = Volley.newRequestQueue(this)
                 val url = "http://13.235.250.119/v2/restaurants/fetch_result/$restaurantId"
-
+                //TODO don't suppress lint warnings unless necessary (which is almost never)
                 val jsonObjectRequest = @SuppressLint("SetTextI18n")
                 object : JsonObjectRequest(
                     Method.GET,
